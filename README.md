@@ -130,4 +130,26 @@ Provides:
 # 9. Dependencies:
 Data Sources → Groups → Users → Memberships → Access Keys → Outputs
 ```
+---
+**For new IAM users, there isn't an automated way to "get" passwords since AWS prioritizes security. Instead, here's the proper procedure:**
 
+1. As an administrator, you'll need to create initial passwords for the users:
+- Use the AWS Console or AWS CLI to create temporary passwords.
+- You can use the aws iam create-login-profile command.
+- Make sure to set "password reset required" to true.
+1. Then securely communicate the temporary credentials to each user:
+- Send the temporary password through a secure channel.
+- Require them to change it on first login
+
+Here's an example AWS CLI command to set up a temporary password:
+
+```hcl
+aws iam create-login-profile --user-name myproject-prod-dev1 --password "TemporaryPassword123!" --password-reset-required
+```
+
+Important security notes:
+
+- Never store or transmit passwords in plaintext
+- Use a secure method to communicate credentials to users
+- Ensure users change their passwords immediately upon first login
+- Make sure to follow your organization's security policies for password distribution
